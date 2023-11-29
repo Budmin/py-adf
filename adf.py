@@ -895,7 +895,8 @@ class Provider:
 
 
 class Prospect:
-    
+
+    __id: Id | None
     __request_date: datetime | None
     __vehicles: List[Vehicle]
     __customer: Customer | None
@@ -903,11 +904,16 @@ class Prospect:
     __provider: Provider | None
 
     def __init__(self):
+      self.__id = None
       self.__request_date = None
       self.__vehicles = []
       self.__customer = None
       self.__vendor = None
       self.__provider = None
+
+    def set_id(self, id: Id):
+      self.__id = id
+      return self
 
     def set_request_date(self, requestdate: datetime):
       self.__request_date = requestdate
@@ -931,6 +937,9 @@ class Prospect:
     
     def to_xml(self):
       elem = etree.Element("prospect")
+
+      if self.__id:
+        elem.append(self.__id.to_xml())
 
       if self.__request_date:
         r = etree.SubElement(elem, "requestdate")
